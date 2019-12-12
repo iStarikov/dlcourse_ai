@@ -135,11 +135,11 @@ def linear_softmax(X, W, target_index):
     dprobs[range(n_samples), target_index] -= 1
     dprobs /= n_samples
     dprobs = dprobs.reshape(pred_shape)
-    dprediction = np.dot(X.T, dprobs)
-    return loss, dprediction
+    dW = np.dot(X.T, dprobs)
+    return loss, dW
 
 
-class LinearSoftmaxClassifier():
+class LinearSoftmaxClassifier:
     def __init__(self):
         self.W = None
 
