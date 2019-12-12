@@ -1,3 +1,7 @@
+"""
+Check gradients
+"""
+
 import numpy as np
 
 
@@ -36,7 +40,7 @@ def check_gradient(f, x, delta=1e-5, tol=1e-4):
         # TODO compute value of numeric gradient of f to idx
         x_d = x.copy()
         x_d[ix] = x_d[ix] - delta
-        fx_d, analytic_grad_d = f(x_d)
+        fx_d, _ = f(x_d)
         numeric_grad_at_ix = (fx_d - fx) / (x_d[ix] - x[ix])
 
         # print(print("Gradients at %s. Analytic: %2.5f, Numeric: %2.5f" % (
