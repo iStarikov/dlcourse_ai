@@ -37,7 +37,6 @@ def check_gradient(f, x, delta=1e-5, tol=1e-4):
     while not it.finished:
         ix = it.multi_index
         analytic_grad_at_ix = analytic_grad[ix]
-        # TODO compute value of numeric gradient of f to idx
         x_d = x.copy()
         x_d[ix] = x_d[ix] - delta
         fx_d, _ = f(x_d)
