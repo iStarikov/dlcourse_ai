@@ -1,5 +1,6 @@
-import numpy as np
 from copy import deepcopy
+
+import numpy as np
 
 from metrics import multiclass_accuracy
 
@@ -8,6 +9,7 @@ class Dataset:
     ''' 
     Utility class to hold training and validation data
     '''
+
     def __init__(self, train_X, train_y, val_X, val_y):
         self.train_X = train_X
         self.train_y = train_y
@@ -124,11 +126,3 @@ class Trainer:
             val_acc_history.append(val_accuracy)
 
         return loss_history, train_acc_history, val_acc_history
-
-            
-
-
-        
-
-                
-        
