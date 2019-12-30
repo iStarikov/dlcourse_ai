@@ -65,13 +65,20 @@ class Trainer:
 
         sections = np.arange(self.batch_size, X.shape[0], self.batch_size)
         batches_indices = np.array_split(indices, sections)
-        
+
         pred = np.zeros_like(y)
-        
+
         for batch_indices in batches_indices:
             batch_X = X[batch_indices]
             pred_batch = self.model.predict(batch_X)
             pred[batch_indices] = pred_batch
+        # print(f"\n prediction {np.unique(pred, return_counts=True)}")
+        # print(f"ground through {np.unique(y, return_counts=True)} \n")
+
+        # param_ = self.model.Conv1.W
+        # before_opt = param_.value[:2, :2]
+        # print(f"PREDICT stage Conv1_W value: \n {before_opt} \n")
+        # print(f"PREDICT stage Conv1_dW: \n {param_.grad[:2, :2]} \n")
 
         return multiclass_accuracy(pred, y)
         
@@ -83,7 +90,6 @@ class Trainer:
             self.setup_optimizers()
         
         num_train = self.dataset.train_X.shape[0]
-
         loss_history = []
         train_acc_history = []
         val_acc_history = []
@@ -104,25 +110,32 @@ class Trainer:
                 
                 for param_name, param in self.model.params().items():
                     optimizer = self.optimizers[param_name]
+                    value1 = param.value
                     param.value = optimizer.update(param.value, param.grad, self.learning_rate)
-
+                    # if param_name == 'Conv1.W':
+                    #     print(f'{param_name.upper()}')
+                    #     # print(f'{value1}')
+                    #     # print(f'{param.value}')
+                    #     update_optimizer = np.mean(value1 - param.value)
+                    #     update_explicit = np.mean(param.grad * self.learning_rate)
+                    #     print(f'FROM PARAMS dict '
+                    #           f'\n  optimizer updates: {update_optimizer}')
+                    #     print(f'IS model and optim param value equal: {np.all(np.isclose(param.value, self.model.params()[param_name].value))}')
+                    #     print(f"  GRAD for param value: {np.mean(param.grad)}, ")
+                    #     print(f"\n  explicit SGD update: {update_explicit} \n")
+                    #     print(f"  IS optimizer on params works: {np.isclose(update_explicit, update_optimizer)} \n")
                 batch_losses.append(loss)
 
             self.learning_rate *= self.learning_rate_decay
-            
             ave_loss = np.mean(batch_losses)
-            
             train_accuracy = self.compute_accuracy(self.dataset.train_X,
                                                    self.dataset.train_y)
-
             val_accuracy = self.compute_accuracy(self.dataset.val_X,
                                                  self.dataset.val_y)
-
-            print("Loss: %f, Train accuracy: %f, val accuracy: %f" % 
-                  (batch_losses[-1], train_accuracy, val_accuracy))
-
+            if epoch % 4 == 0:
+                print(f"EPOCH {epoch}: Loss: {batch_losses[-1]}, "
+                      f"Train accuracy: {train_accuracy}, val accuracy: {val_accuracy}")
             loss_history.append(ave_loss)
             train_acc_history.append(train_accuracy)
             val_acc_history.append(val_accuracy)
-
         return loss_history, train_acc_history, val_acc_history

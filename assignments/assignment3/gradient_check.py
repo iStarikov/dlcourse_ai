@@ -27,19 +27,14 @@ def check_gradient(f, x, delta=1e-5, tol=1e-4, debug=False):
     while not it.finished:
         ix = it.multi_index
         analytic_grad_at_ix = analytic_grad[ix]
-        # x_d = x.copy()
-        # x_d[ix] = x_d[ix] - delta
-        # fx_d_low, _ = f(x_d)
-        # x_d[ix] = x_d[ix] + delta
-        # fx_d_up, _ = f(x_d)
-        # numeric_grad_at_ix = (fx_d_up - fx_d_low) / -(2 * delta)
-
         x_d_low = x.copy()
         x_d_up = x.copy()
         x_d_low[ix] = x_d_low[ix] - delta
         fx_d_low, _ = f(x_d_low)
         x_d_up[ix] = x_d_up[ix] + delta
         fx_d_up, _ = f(x_d_up)
+        # print(f(x_d_up))
+        # print(fx_d_up, fx_d_low)
         numeric_grad_at_ix = (fx_d_up - fx_d_low) / (2 * delta)
 
         if debug:

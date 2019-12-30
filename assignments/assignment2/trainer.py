@@ -130,7 +130,30 @@ class Trainer:
 
                 for param_name, param in self.model.params().items():
                     optimizer = self.optimizers[param_name]
+                    value1 = param.value
                     param.value = optimizer.update(param.value, param.grad, self.learning_rate)
+                    if param_name == 'FC1.W':
+                        # print(f'{param_name.upper()}')
+                        # print(f'{value1}')
+                        # print(f'{param.value}')
+                        update_optimizer = np.mean(value1 - param.value)
+                        update_explicit = np.mean(param.grad * self.learning_rate)
+                        # print(f'FROM PARAMS dict '
+                        #       f'\n  optimizer updates: {update_optimizer}')
+                        # print(f"  GRAD for param value: {np.mean(param.grad)}, ")
+                        # print(f"\n  explicit SGD update: {update_explicit} \n")
+                        # print(f"  IS optimizer on params works: {np.isclose(update_explicit, update_optimizer)} \n")
+                batch_losses.append(loss)
+
+                param = self.model.FC1.W
+                value1 = param.value
+                update_optimizer = np.mean(value1 - param.value)
+                update_explicit = np.mean(param.grad * self.learning_rate)
+                # print(f'FROM LAYERS dict '
+                #       f'\n  optimizer updates: {update_optimizer}')
+                # print(f"  GRAD for param value: {np.mean(param.grad)}, ")
+                # print(f"\n  explicit SGD update: {update_explicit} \n")
+                # print(f"  IS optimizer on params works: {np.isclose(update_explicit, update_optimizer)} \n")
 
                 # if (epoch % 3 == 0) & (batch_n % 200 == 0):
                 #     param_ = self.model.params()['FC1_W']
@@ -148,8 +171,6 @@ class Trainer:
                 #         print(self.model.params()[param_name].value[:3, :5])
                 #         print(np.all(self.model.params()[param_name].value[:3, :5] == param.value[:3, :5]))
                 #         print(np.all(before_opt == param.value[:3, :5]))
-
-                batch_losses.append(loss)
 
             # classic decay
             # if (epoch % 10 == 0) & epoch != 0:

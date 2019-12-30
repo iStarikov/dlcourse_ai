@@ -1,6 +1,7 @@
+import os
+
 import numpy as np
 import scipy.io as io
-import os
 
 
 def load_data_mat(filename, max_samples, seed=42):
@@ -41,5 +42,3 @@ def random_split_train_val(X, y, num_val, seed=42):
     val_y = y[val_indices]
 
     return train_X, train_y, val_X, val_y
-    
-    

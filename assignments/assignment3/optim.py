@@ -15,7 +15,16 @@ class SGD:
         Returns:
         updated_weights, np array same shape as w
         """
-        return w - d_w * learning_rate
+
+        w_new = w - d_w * learning_rate
+        # print('\n FROM OPTIMIZER')
+        # print(w[:2, :2, :2, :2])
+        # print(d_w[:2, :2, :2, :2])
+        # print(learning_rate)
+        # print('\n')
+        # print(w_new[:2, :2, :2, :2])
+        # print('\n')
+        return w_new
 
 
 class MomentumSGD:

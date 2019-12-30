@@ -13,7 +13,6 @@ def softmax(predictions):
       probs, np array of the same shape as predictions -
         probability for every class, 0..1
     '''
-    # TODO implement softmax
     # Your final implementation shouldn't have any loops
     y_hat = predictions.copy()
     if y_hat.ndim == 1:
@@ -114,7 +113,6 @@ def softmax_with_cross_entropy(preds, target_index):
       loss, single value - cross-entropy loss
       dprediction, np array same shape as predictions - gradient of predictions by loss value
     """
-    # TODO: Copy from the previous assignment
     pred_shape = preds.shape
     if preds.ndim == 1:
         preds = preds.reshape((-1, preds.shape[0]))
@@ -151,7 +149,6 @@ class ReLULayer:
         self.diff = None
 
     def forward(self, X):
-        # TODO: Implement forward pass
         # Hint: you'll need to save some information about X
         # to use it later in the backward pass
         out = X.copy()
@@ -197,7 +194,6 @@ class FullyConnectedLayer:
         self.X = None
 
     def forward(self, X):
-        # TODO: Implement forward pass
         # Your final implementation shouldn't have any loops
         self.X = X.copy()
         full = np.dot(self.X, self.W.value) + self.B.value
@@ -217,7 +213,6 @@ class FullyConnectedLayer:
         d_result: np array (batch_size, n_input) - gradient
           with respect to input
         """
-        # TODO: Implement backward pass
         # Compute both gradient with respect to input
         # and gradients with respect to W and B
         # Add gradients of W and B to their `grad` attribute
